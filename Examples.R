@@ -1,7 +1,13 @@
 # Network Satistics Workshop
 
+
 # Part 1 -- Taiane Coelho Ramos
+# =============================
 require(igraph)
+
+
+# Random Graph Models
+# -------------------
 
 # Example 1 -- Erdös-Rényi Random Graph Model
 set.seed(1)
@@ -28,7 +34,10 @@ set.seed(1)
 g <- barabasi.game(30, power=2, m=2, directed=FALSE)
 plot(g, layout=layout_nicely, edge.color='black')
 
+
 # Graph Measures
+# --------------
+
 # Example 6 -- Degree Centrality
 set.seed(1)
 BA <- barabasi.game(n=20, power=2, m=2, directed=FALSE)
@@ -64,7 +73,60 @@ library(statGraph)
 graph.entropy(get.adjacency(BA))
 plot(BA, layout=layout_nicely)
 
+
+
 # Part 2 -- André Fujita
+# ======================
+
+
+# Paramenter Estimation
+# ---------------------
+
+# Example 1 -- Parameter Estimator for Erdös-Rényi Random Graph Model
+set.seed(1)
+A <- as.matrix(get.adjacency(erdos.renyi.game(50, p=0.5)))
+# Using a string to indicate the graph model
+result1 <- graph.param.estimator(A, 'ER', eps=0.1)
+# estimated parameters:
+#   p   = 0.489
+#   GIC = 0.000416 (graph information criterion -- smalled Kullback-Leiber divergence)
+
+# Example 2 -- Additional models
+model <- function(n,p) {
+  return(as.matrix(get.adjacency(erdos.renyi.game(n,p))))
+}
+
+set.seed(2)
+result2 <- graph.param.estimator(A, model, seq(0.2, 0.8, 0.1), classic=TRUE)
+# estimated parameters:
+#   p   = 5
+#   GIC = 0.000358
+
+# Example 3 -- Precomputed spectra (available on the slides)
+
+
+# Model Selection
+# ---------------
+
+# Example 1 -- Predefined models
+set.seed(0)
+A <- as.matrix(get.adjacency(erdos.renyi.game(50, p=0.3)))
+result1 <- graph.model.selection(A, eps=0.1)
+# Selected model: ER, p = 0.320
+
+# model selection from a collection of random graph models
+result2 <- graph.model.selection(A, c('ER', 'GRG'), eps=0.1)
+
+# Example 2 -- Use your own models (available on the slides)
+
+
+# Correlation between vectors of graphs
+# -------------------------------------
+
+# Example 1 -- dependent graphs (available in the slides)
+
+# Example 2 -- independent graphs (available in the slides)
+
 
 
 
